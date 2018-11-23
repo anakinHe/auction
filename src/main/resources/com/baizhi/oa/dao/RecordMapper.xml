@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.baizhi.oa.dao.RecordDao"> 
+	<resultMap id="x1" type="com.baizhi.oa.entity.Record">
+		<id property="id" column="id"/>
+		<result property="userid" column="user_id"/>
+		<result property="productid" column="auction_id"/>
+		<result property="time" column="auction_time"/>
+		<result property="price" column="auction_price"/>
+			<association property="user" javaType="com.baizhi.oa.entity.User">
+		 		<id property="id" column="aid"/>
+		 		<result property="name" column="name"/>
+			</association>
+			
+	</resultMap>
+	<insert id="addRecord">
+		insert into auction_record values(auction_record_seq.nextval,#{userid},
+			#{productid},#{time},#{price})
+	</insert>
+	<select id="getAll" resultMap="x1">
+		    select * from (select t1.*, rownum r  from (select b.*, a.user_id aid, a.user_name name
+		     from auction_user a inner join auction_record b on a.user_id = b.user_id 
+		     where auction_id = #{id} order by auction_price desc) t1 ) t2 
+		       where r<![CDATA[<=]]>5
+	</select>
+</mapper>

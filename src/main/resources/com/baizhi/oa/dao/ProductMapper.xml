@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.baizhi.oa.dao.ProductDao"> 
+   <resultMap type="com.baizhi.oa.entity.Product" id="x1">
+   		<id property="id" column="auction_id"/>
+ 		<result property="name" column="auction_name"/>
+ 		<result property="startPrice" column="auction_start_price"/>
+ 		<result property="upset" column="auction_upset"/>
+ 		<result property="startTime" column="auction_start_time"/>
+ 		<result property="endTime" column="auction_end_time"/>
+ 		<result property="picture" column="auction_pic"/>
+ 		<result property="desc" column="auction_desc"/> 
+   </resultMap>
+   <select id="selectAll" resultMap="x1">
+ 		 select * from auction
+ 		 <where>
+ 		 	<if test="name!=null and name!=''">
+ 		 		and auction_name like '%'|| #{name} ||'%'
+ 		 	</if>
+ 		 	<if test="desc!=null and desc!=''">
+ 		 		and auction_desc like '%'|| #{desc} ||'%'
+ 		 	</if>
+ 		 	<if test="startTime!=null and startTime!=''">
+ 		 		and auction_start_time <![CDATA[>]]>#{startTime}
+ 		 	</if>
+ 		 	<if test="endTime!=null and endTime!=''">
+ 		 		and auction_end_time <![CDATA[<]]>#{endTime}
+ 		 	</if>
+ 		 	<if test="startPrice!=null and startPrice!=''">
+ 		 		and auction_start_price = #{startPrice} 
+ 		 	</if>
+ 		 </where>
+ 	</select>
+
+ 	<select id="selectOne" resultMap="x1">
+ 		 select * from auction where auction_id = #{id}
+ 	</select>
+
+ 	<insert id="addProduct">
+ 		insert into auction values(auction_seq.nextval, #{name},#{startPrice},#{upset},
+ 			 #{startTime},#{endTime},#{picture},#{desc})
+ 	</insert>
+	<delete id="delete">
+		delete from auction where auction_id = #{id}
+	</delete>
+ 	<update id="update">
+ 		update auction set auction_name = #{name},auction_start_price = #{startPrice},
+ 			auction_upset = #{upset}, auction_start_time =  #{startTime},
+ 			auction_end_time= #{endTime},auction_pic = #{picture},
+ 			 auction_desc = #{desc} where auction_id = #{id}
+ 	</update>
+</mapper>

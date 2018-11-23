@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.baizhi.oa.dao.UserDao"> 
+   <resultMap type="com.baizhi.oa.entity.User" id="x1">
+   		<id property="id" column="user_id"/>
+		<result property="name" column="user_name"/>
+		<result property="password" column="user_password"/>
+		<result property="identity" column="user_card_no"/>
+		<result property="phone" column="user_tel"/>
+		<result property="address" column="user_address"/>
+		<result property="postNumber" column="user_post_number"/>
+		<result property="admin" column="user_is_admin"/>
+		<result property="question" column="user_question"/>
+		<result property="answer" column="user_answer"/>
+   </resultMap>
+   <select id="login" resultMap="x1">
+   		select * from auction_user where user_name= #{name} and user_password = #{password}
+   </select>
+   <insert id="register">
+   		insert into auction_user values(auction_user_seq.nextval,#{name},#{password},#{identity},
+			#{phone},#{address},#{postNumber},#{admin},#{question},#{answer})
+   </insert>
+</mapper>
